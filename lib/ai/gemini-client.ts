@@ -1,102 +1,101 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-if (!process.env.GEMINI_API_KEY) {
-  throw new Error('Missing GEMINI_API_KEY environment variable');
+if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
+  console.warn("NEXT_PUBLIC_GEMINI_API_KEY is not set");
 }
 
-// Initialize the Gemini AI client
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || "");
 
-// Configure the chat model
-const chatModel = genAI.getGenerativeModel({ model: 'gemini-pro' });
+// Configure the chat model with Gemini 2.0 Flash
+const chatModel = genAI.getGenerativeModel({
+  model: "gemini-2.5-flash-preview-04-17",
+  generationConfig: {
+    temperature: 0.7,
+    topK: 1,
+    topP: 1,
+    maxOutputTokens: 2048,
+  },
+});
 
-// Configure the vision model for potential future use with images
-const visionModel = genAI.getGenerativeModel({ model: 'gemini-pro-vision' });
+// Configure the vision model with Gemini 2.0 Flash
+const visionModel = genAI.getGenerativeModel({
+  model: "gemini-2.5-flash-preview-04-17",
+  generationConfig: {
+    temperature: 0.4,
+    topK: 32,
+    topP: 1,
+    maxOutputTokens: 2048,
+  },
+});
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
 }
 
-export async function generateChatResponse(
-  messages: ChatMessage[],
-  temperature: number = 0.7
-) {
+export async function generateChatResponse(messages: ChatMessage[] | string): Promise<string> {
   try {
-    const chat = chatModel.startChat({
-      history: messages.map(msg => ({
-        role: msg.role,
-        parts: [{ text: msg.content }],
-      })),
-      generationConfig: {
-        temperature,
-        topK: 40,
-        topP: 0.95,
-        maxOutputTokens: 1024,
-      },
-    });
+    let apiRequest;
+    
+    // If messages is a string, use it directly as content
+    if (typeof messages === 'string') {
+      apiRequest = {
+        contents: [{
+          role: 'user',
+          parts: [{text: messages}]
+        }]
+      };
+    } else {
+      // For chat messages, use the last user message
+      const lastUserMessage = messages
+        .filter(msg => msg.role === 'user')
+        .pop();
 
-    const result = await chat.sendMessage(messages[messages.length - 1].content);
+      if (!lastUserMessage) {
+        throw new Error('No user message found in chat history');
+      }
+
+      apiRequest = {
+        contents: [{
+          role: 'user',
+          parts: [{text: lastUserMessage.content}]
+        }]
+      };
+    }
+
+    console.log('Sending request to Gemini API:', JSON.stringify(apiRequest, null, 2));
+    const result = await chatModel.generateContent(apiRequest);
+    console.log('Raw API response:', result);
     const response = await result.response;
-    return response.text();
+    const text = response.text();
+    console.log('Extracted text from response:', text);
+    return text;
   } catch (error) {
-    console.error('Error generating chat response:', error);
+    console.error("Error generating chat response:", error);
     throw error;
   }
 }
 
-export async function validateSpanishAnswer(
-  question: string,
-  userAnswer: string,
-  correctAnswer: string
-) {
+export async function validateAnswer(answer: string): Promise<string> {
   try {
-    const prompt = `As a Spanish language expert, evaluate if the user's answer is correct.
-Question: ${question}
-User's answer: ${userAnswer}
-Correct answer: ${correctAnswer}
-
-Provide your response in the following JSON format:
-{
-  "isCorrect": boolean,
-  "explanation": "Brief explanation of why the answer is correct or incorrect",
-  "suggestions": "Suggestions for improvement if the answer is incorrect"
-}`;
-
-    const result = await chatModel.generateContent(prompt);
+    const validationPrompt = `Please validate if this answer is correct and provide feedback: ${answer}`;
+    const result = await chatModel.generateContent(validationPrompt);
     const response = await result.response;
-    return JSON.parse(response.text());
+    return response.text();
   } catch (error) {
-    console.error('Error validating answer:', error);
+    console.error("Error validating answer:", error);
     throw error;
   }
 }
 
-export async function generateConversationPrompt(
-  theme: string,
-  userLevel: string,
-  knownWords: string[],
-  wordsToLearn: string[]
-) {
+export async function generateConversationPrompt(answer: string): Promise<string> {
   try {
-    const prompt = `As a Spanish conversation partner, engage in a dialogue about ${theme}.
-User's level: ${userLevel}
-Known words: ${knownWords.join(', ')}
-Words to learn: ${wordsToLearn.join(', ')}
-
-Create a natural conversation that:
-1. Uses known words frequently for reinforcement
-2. Introduces words to learn naturally in context
-3. Maintains appropriate difficulty for the user's level
-4. Stays focused on the theme
-
-Respond in a conversational manner, one message at a time.`;
-
+    const prompt = `Based on this answer, generate a follow-up question to continue the conversation: ${answer}`;
     const result = await chatModel.generateContent(prompt);
     const response = await result.response;
     return response.text();
   } catch (error) {
-    console.error('Error generating conversation prompt:', error);
+    console.error("Error generating conversation prompt:", error);
     throw error;
   }
 }
@@ -105,6 +104,6 @@ export const geminiClient = {
   chatModel,
   visionModel,
   generateChatResponse,
-  validateSpanishAnswer,
+  validateAnswer,
   generateConversationPrompt,
 }; 

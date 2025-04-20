@@ -6,10 +6,10 @@ import { createClient } from "../../utils/supabase/client";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 
-export default async function LoginPage({
+export default function LoginPage({
   searchParams,
 }: {
-  searchParams: { message: string };
+  searchParams: { message?: string };
 }) {
   const handleSignInWithGoogle = async () => {
     try {

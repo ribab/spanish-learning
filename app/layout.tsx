@@ -1,11 +1,15 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
-import { ThemeProvider } from "next-themes";
 import Navigation from "@/components/layout/Navigation";
+import { Inter } from "next/font/google";
+import { Toaster } from "sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "https://localhost:3000";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
@@ -19,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={GeistSans.className}>
-      <body className="bg-background text-foreground min-h-screen">
+    <html lang="en" className={GeistSans.className} suppressHydrationWarning>
+      <body className="bg-background text-foreground min-h-screen" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -31,6 +35,7 @@ export default function RootLayout({
           <main className="container mx-auto px-4 py-8">
             {children}
           </main>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
