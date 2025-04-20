@@ -1,0 +1,65 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# AI Features Implementation Guidelines
+
+## Gemini 2.0 Flash-Lite Integration
+
+### Configuration
+- API configuration should be stored in [.env](mdc:.env) and accessed through environment variables
+- Gemini client setup and configuration should be centralized in [src/lib/ai/gemini-client.ts](mdc:src/lib/ai/gemini-client.ts)
+- Model configurations and prompts should be stored in [src/lib/ai/prompts](mdc:src/lib/ai/prompts)
+
+### Implementation Guidelines
+
+#### Conversation Feature
+- Use streaming responses for real-time conversation feedback
+- Implement conversation history management in [src/lib/ai/conversation-manager.ts](mdc:src/lib/ai/conversation-manager.ts)
+- Store conversation themes and templates in [src/data/conversation-themes.ts](mdc:src/data/conversation-themes.ts)
+- Implement rate limiting and error handling
+
+#### Language Processing
+- Text analysis and word difficulty assessment in [src/lib/ai/language-analysis.ts](mdc:src/lib/ai/language-analysis.ts)
+- Answer validation logic in [src/lib/ai/answer-validator.ts](mdc:src/lib/ai/answer-validator.ts)
+- Context-aware translations in [src/lib/ai/translator.ts](mdc:src/lib/ai/translator.ts)
+
+### Best Practices
+1. Always use typed responses from Gemini API
+2. Implement proper error boundaries for AI features
+3. Cache API responses when appropriate
+4. Use streaming for long-form responses
+5. Implement fallback behavior for API failures
+6. Monitor token usage and implement limits
+
+### Security Guidelines
+1. Never expose API keys in client-side code
+2. Validate all user input before sending to API
+3. Implement rate limiting per user
+4. Sanitize AI responses before displaying
+5. Log all API errors for monitoring
+
+### Testing
+- Unit tests for AI features should be in [src/tests/ai](mdc:src/tests/ai)
+- Mock Gemini responses in tests
+- Test error handling and edge cases
+- Validate response formats
+
+### Performance
+1. Implement response caching where appropriate
+2. Use streaming for long responses
+3. Optimize prompt sizes
+4. Monitor and log performance metrics
+
+### Error Handling
+- Implement graceful degradation
+- Provide user-friendly error messages
+- Log errors for debugging
+- Have fallback responses ready
+
+### Monitoring
+1. Track API usage and costs
+2. Monitor response times
+3. Log error rates
+4. Track user interaction success rates

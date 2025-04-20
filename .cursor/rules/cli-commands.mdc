@@ -1,0 +1,29 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# CLI Command Guidelines
+
+When executing CLI commands:
+
+1. Always use non-interactive flags to avoid prompts:
+   - Use `-y` or `--yes` for confirmation prompts
+   - Use `-f` or `--force` for force operations
+   - Use `--no-input` when available
+   - Use `--non-interactive` when available
+
+2. Examples:
+   - `npm install -y` instead of `npm install`
+   - `rm -f` instead of `rm`
+   - `npx create-next-app@latest --yes` instead of `npx create-next-app@latest`
+
+3. For package managers:
+   - npm: use `--yes` or `-y`
+   - yarn: use `--yes` or `-y`
+   - pnpm: use `--yes` or `-y`
+
+4. For git operations:
+   - Use `--force` or `-f` when needed
+   - Use `--no-verify` to skip hooks when appropriate
+   - Use `-m` for commit messages instead of opening editor

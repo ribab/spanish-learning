@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,4 +23,144 @@ model views {
   id         BigInt   @id @default(autoincrement())
   created_at DateTime @default(now()) @db.Timestamptz(6)
   name       String?
+}
+
+// Extends Supabase auth.users
+model User {
+  id            String    @id // matches auth.users.id
+  email         String    @unique // matches auth.users.email
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  
+  // Learning progress
+  level         String    @default("beginner") // beginner, intermediate, advanced
+  totalWords    Int       @default(0) @map("total_words")
+  wordsLearned  Int       @default(0) @map("words_learned")
+  streakDays    Int       @default(0) @map("streak_days")
+  lastStudied   DateTime  @default(now()) @map("last_studied")
+  
+  // Relations
+  words         Word[]    // Words the user is learning
+  flashcards    Flashcard[]
+  conversations Conversation[]
+  videoLessons  VideoLesson[]
+  readingTexts  ReadingText[]
+  progress      LearningProgress[]
+
+  @@map("users") // Supabase naming convention
+}
+
+model Word {
+  id           String   @id @default(cuid())
+  spanish      String
+  english      String
+  partOfSpeech String   @map("part_of_speech") // noun, verb, adjective, etc.
+  difficulty   String   // easy, medium, hard
+  context      String?  // Example sentence or usage context
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  users        User[]   // Users learning this word
+  flashcards   Flashcard[]
+  videoLessons VideoLesson[] // Videos where this word appears
+  readingTexts ReadingText[] // Texts where this word appears
+  progress     LearningProgress[]
+
+  @@map("words")
+}
+
+model Flashcard {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  wordId      String   @map("word_id")
+  nextReview  DateTime @map("next_review")
+  interval    Int      // Days until next review
+  easeFactor  Float    @default(2.5) @map("ease_factor")
+  reviews     Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id])
+  word        Word     @relation(fields: [wordId], references: [id])
+  progress    LearningProgress[]
+
+  @@map("flashcards")
+}
+
+model VideoLesson {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  youtubeId   String   @map("youtube_id")
+  title       String
+  transcript  String
+  difficulty  String   // beginner, intermediate, advanced
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id])
+  words       Word[]   // Words appearing in the video
+  progress    LearningProgress[]
+
+  @@map("video_lessons")
+}
+
+model ReadingText {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  title       String
+  content     String
+  difficulty  String   // beginner, intermediate, advanced
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id])
+  words       Word[]   // Words appearing in the text
+  progress    LearningProgress[]
+
+  @@map("reading_texts")
+}
+
+model Conversation {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  theme       String
+  content     Json     // Array of messages
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id])
+  progress    LearningProgress[]
+
+  @@map("conversations")
+}
+
+model LearningProgress {
+  id            String   @id @default(cuid())
+  userId        String   @map("user_id")
+  wordId        String   @map("word_id")
+  flashcardId   String?  @map("flashcard_id")
+  videoLessonId String?  @map("video_lesson_id")
+  readingTextId String?  @map("reading_text_id")
+  conversationId String? @map("conversation_id")
+  status        String   // new, learning, reviewing, mastered
+  confidence    Float    @default(0.0)
+  lastPracticed DateTime @default(now()) @map("last_practiced")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user          User     @relation(fields: [userId], references: [id])
+  word          Word     @relation(fields: [wordId], references: [id])
+  flashcard     Flashcard? @relation(fields: [flashcardId], references: [id])
+  videoLesson   VideoLesson? @relation(fields: [videoLessonId], references: [id])
+  readingText   ReadingText? @relation(fields: [readingTextId], references: [id])
+  conversation  Conversation? @relation(fields: [conversationId], references: [id])
+
+  @@unique([userId, wordId])
+  @@map("learning_progress")
 }

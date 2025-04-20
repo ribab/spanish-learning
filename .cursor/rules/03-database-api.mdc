@@ -1,0 +1,48 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Database and API Guidelines
+
+## Database Schema Guidelines
+- Use clear and consistent naming for tables and columns
+- Include proper indexes for frequently queried fields
+- Store language content with proper character encoding
+- Implement proper relations between learning materials
+- Use appropriate field types for language-specific content
+
+## API Endpoint Structure
+- Follow RESTful conventions
+- Use proper HTTP methods
+- Implement proper error handling
+- Include appropriate validation
+- Document all endpoints
+
+## Data Models
+- Define clear Prisma models
+- Use appropriate field types
+- Implement proper relationships
+- Include necessary indexes
+- Add helpful comments
+
+## Security
+- Implement proper authentication
+- Validate all user inputs
+- Sanitize language content
+- Use appropriate rate limiting
+- Follow OWASP security guidelines
+
+## Error Handling
+- Use consistent error formats
+- Include appropriate status codes
+- Provide helpful error messages
+- Log errors appropriately
+- Handle language-specific errors
+
+## Performance
+- Optimize database queries
+- Implement proper caching
+- Use appropriate batch operations
+- Monitor query performance
+- Handle large datasets efficiently

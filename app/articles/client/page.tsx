@@ -1,7 +1,7 @@
 "use client";
 
-import AddArticleForm from "@/components/add-article-form";
-import { createClient } from "@/utils/supabase/client";
+import AddArticleForm from "../../../components/add-article-form";
+import { createClient } from "../../../utils/supabase/client";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 

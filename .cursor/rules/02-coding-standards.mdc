@@ -1,0 +1,44 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Coding Standards
+
+## TypeScript Guidelines
+- Always use proper TypeScript types
+- Avoid `any` type unless absolutely necessary
+- Use interfaces for complex data structures
+- Enable strict type checking
+
+## React/Next.js Best Practices
+- Use functional components with hooks
+- Implement proper error boundaries
+- Use Next.js built-in features for optimization
+- Keep components small and focused
+- Use proper prop typing
+
+## Language-Specific Guidelines
+- Store all Spanish text in localization files
+- Use proper accent marks and Spanish characters
+- Include English translations/comments for Spanish content
+- Follow Spanish language capitalization rules
+- Use appropriate language tags in HTML elements
+
+## State Management
+- Use React hooks for local state
+- Implement proper data fetching patterns
+- Cache language-learning progress appropriately
+- Handle loading and error states consistently
+
+## Testing
+- Write unit tests for utility functions
+- Test language-specific edge cases
+- Ensure proper handling of special characters
+- Test accessibility features
+
+## Performance
+- Implement proper code splitting
+- Optimize images and media content
+- Use appropriate caching strategies
+- Monitor and optimize bundle size

@@ -1,0 +1,80 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Spanish Learning Project Overview
+
+This is a Next.js-based Spanish learning application using TypeScript, Prisma, Supabase, TailwindCSS, and Shadcn/UI components. The application integrates Gemini AI for conversation practice and learning assistance.
+
+## Key Files and Directories
+- [next.config.mjs](mdc:next.config.mjs) - Next.js configuration
+- [package.json](mdc:package.json) - Project dependencies and scripts
+- [tsconfig.json](mdc:tsconfig.json) - TypeScript configuration
+- [tailwind.config.js](mdc:tailwind.config.js) - Tailwind CSS configuration
+- [prisma/schema.prisma](mdc:prisma/schema.prisma) - Database schema
+- [src/](mdc:src) - Main application source code
+  - [src/app/](mdc:src/app) - Next.js App Router pages
+  - [src/components/](mdc:src/components) - Reusable UI components
+  - [src/lib/](mdc:src/lib) - Utility functions and services
+  - [src/lib/ai/](mdc:src/lib/ai) - AI integration services
+- [public/](mdc:public) - Static assets
+- [.env](mdc:.env) - Environment variables
+
+## Core Technologies
+1. Next.js with App Router for the framework
+2. Prisma for database ORM
+3. Supabase for auth and real-time features
+4. TailwindCSS for styling
+5. Shadcn/UI for component library
+6. Gemini AI for language learning features
+7. TypeScript for type safety
+
+## Development Guidelines
+1. Use TypeScript for all new code
+2. Follow the existing project structure
+3. Use Tailwind CSS for styling
+4. Keep components modular and reusable
+5. Write meaningful commit messages
+6. Run tests before committing
+
+## Authentication
+- Supabase authentication setup
+- Email/password and social login support
+- Protected routes and middleware
+- Server-side session handling
+
+## Database Structure
+- Prisma schema for user data
+- Learning progress tracking
+- Vocabulary and flashcards
+- Video learning materials
+- Conversation history
+
+## AI Integration
+- Gemini API configuration
+- Conversation management
+- Language processing services
+- Learning analytics
+
+## Code Style
+- Follow ESLint and Prettier configurations
+- Use meaningful variable names in both English and Spanish contexts
+- Comment complex logic, especially language-specific implementations
+- Use TypeScript types/interfaces for data structures
+
+## Environment Setup
+Required environment variables:
+```
+DATABASE_URL=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+GEMINI_API_KEY=
+```
+
+## Key Features Location
+- YouTube video learning: [src/app/learn/video](mdc:src/app/learn/video)
+- AI conversation: [src/app/learn/conversation](mdc:src/app/learn/conversation)
+- Reading practice: [src/app/learn/reading](mdc:src/app/learn/reading)
+- Flashcards: [src/app/flashcards](mdc:src/app/flashcards)
+- User progress: [src/app/progress](mdc:src/app/progress)

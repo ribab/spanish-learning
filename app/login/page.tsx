@@ -2,9 +2,11 @@
 import Link from "next/link";
 import { SubmitButton } from "./submit-button";
 import { signIn, signUp, signInWithGoogleOAuth } from "./actions";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "../../utils/supabase/client";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 
-export default async function Login({
+export default async function LoginPage({
   searchParams,
 }: {
   searchParams: { message: string };
@@ -54,7 +56,11 @@ export default async function Login({
         Back
       </Link>
       <div className="flex flex-col gap-9 ">
-        <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
+        <form
+          className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
+          action="/auth/sign-in"
+          method="post"
+        >
           <label className="text-md" htmlFor="email">
             Email
           </label>
@@ -72,23 +78,17 @@ export default async function Login({
             type="password"
             name="password"
             placeholder="••••••••"
-            //required
+            required
           />
-          <SubmitButton
-            formAction={signIn}
-            className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2"
-            pendingText="Signing In..."
-          >
+          <button className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2">
             Sign In
-          </SubmitButton>
-          <SubmitButton
-            formAction={signUp}
+          </button>
+          <button
+            formAction="/auth/sign-up"
             className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
-            pendingText="Signing Up..."
           >
             Sign Up
-          </SubmitButton>
-
+          </button>
           {searchParams?.message && (
             <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
               {searchParams.message}

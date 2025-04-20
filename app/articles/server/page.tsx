@@ -1,11 +1,13 @@
-import { db } from "@/src/lib/prisma";
+import { db } from "@/lib/prisma";
 import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
 import React from "react";
 
 type Props = {};
 
 const NotesPage = async (props: Props) => {
-  const supabase = createClient();
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
   const { data: articles } = await supabase.from("articles").select();
   //const articles = await db.articles.findMany();
 

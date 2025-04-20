@@ -1,10 +1,12 @@
-import AuthButton from "@/components/AuthButton";
+import AuthButton from "@/components/auth/AuthButton";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import AccountSettings from "@/components/AccountSettings";
+import AccountSettings from "@/components/auth/AccountSettings";
+import { cookies } from "next/headers";
 
 export default async function ProtectedPage() {
-  const supabase = createClient();
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
 
   const {
     data: { user },

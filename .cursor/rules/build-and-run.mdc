@@ -1,0 +1,31 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Build and Run Guidelines
+
+1. Before running the application:
+   - Always build first to check for errors
+   - Use `npm run build` Wor equivalent command
+   - Check build output for errors and warnings
+   - Fix any build errors before proceeding
+
+2. Running the application:
+   - DO NOT automatically start the application
+   - Instead, provide the command for the user to run
+   - Example: "To start the application, please run: `npm run dev`"
+   - Include any necessary environment setup instructions
+
+3. Build errors:
+   - When build errors occur:
+     - Show the error message
+     - Explain the likely cause
+     - Suggest fixes
+     - Let the user decide how to proceed
+
+4. Development workflow:
+   - Build first: `npm run build`
+   - Fix any build errors
+   - Provide start command to user
+   - Let user control when to start the application

@@ -1,0 +1,56 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Development Tracking Guidelines
+
+## Project Planning
+The project plan is maintained in @.notes/plan.md. When working on the project:
+- Reference the project phases and goals
+- Update task status ([ ] to [x]) as items are completed
+- Add new tasks as they are identified
+- Keep technical requirements up to date
+- Document timeline changes
+
+## Development Notes
+Development progress is tracked in @.notes/dev.md When implementing features or making changes:
+
+### Status Updates
+- Keep "Current Development Status" section updated
+- Add dated entries in the Development Log
+- Document all technical decisions with rationales
+
+### Implementation Documentation
+- Record important implementation details
+- Document challenges and their solutions
+- Note any deviations from initial plans
+- Track performance optimizations
+- Document security considerations
+
+### Task Management
+- Maintain the TODO list with current tasks
+- Update Questions & Considerations as needed
+- Document integration details with external services
+- Keep testing notes current
+
+## Guidelines for Updates
+1. Always date new entries in the development log
+2. Link related entries between plan.md and dev.md
+3. Keep security-sensitive information in appropriate secure storage
+4. Update debugging notes with reproducible steps
+5. Document all API integrations thoroughly
+
+## Review Process
+- Regularly review and update both documents
+- Ensure alignment between plan and implementation
+- Track technical debt and future improvements
+- Document lessons learned and best practices
+- Keep deployment notes current
+
+## Note Format
+- Use clear, concise language
+- Include code examples where helpful
+- Link to relevant documentation
+- Add timestamps for important updates
+- Tag urgent or blocking issues appropriately
